@@ -4,3 +4,6 @@
 # Editor-based HTTP Client requests
 /httpRequests/
 .idea
+/modules.xml
+/the-museum-of-us.iml
+/vcs.xml
