@@ -6,5 +6,6 @@
   </header>
 
   <main>
+    Afficher C:
   </main>
 </template>
