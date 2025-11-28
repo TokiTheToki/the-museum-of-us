@@ -16,6 +16,7 @@ jobs:
   deploytonekoweb:
     runs-on: ubuntu-latest
     name: deploy2nekoweb
+    needs: build_vue
     steps:
       - name: Checkout
         uses: actions/checkout@v4
