@@ -33,6 +33,14 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
+      - name: Download built files
+        uses: actions/download-artifact@v6
+        with:
+          name: vue-dist
+
+      - name: List files for debugging
+        run: ls -la
+
       - name: deploy2nekoweb
         uses: indiefellas/deploy2nekoweb@main
         with:
