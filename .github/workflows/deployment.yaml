@@ -29,4 +29,4 @@ jobs:
           nekoweb-api-key: ${{ secrets.NEKOWEB_API_KEY }}
           nekoweb-domain: 'the-museum-of-us.nekoweb.org'
           nekoweb-username: 'the-museum-of-us'
-          directory: 'src'
+          directory: '/'
