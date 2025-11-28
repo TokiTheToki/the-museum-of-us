@@ -37,9 +37,7 @@ jobs:
         uses: actions/download-artifact@v6
         with:
           name: vue-dist
-
-      - name: List files for debugging
-        run: ls -la
+          path: ./deploy-files
 
       - name: Analyze files before deploy
         run: |
@@ -51,10 +49,23 @@ jobs:
           echo "Directory structure:"
           find . -type d | sort
 
+      - name: Find and prepare deployment files
+        run: |
+          echo "Looking for built files..."
+          # Check if files are in dist folder or root
+          if [ -d "./deploy-files/dist" ]; then
+            echo "Found files in dist folder"
+            cp -r ./deploy-files/dist/* ./deploy-files/
+            rm -rf ./deploy-files/dist
+          fi
+
+          echo "Final deployment files:"
+          ls -la ./deploy-files/
+
       - name: deploy2nekoweb
         uses: indiefellas/deploy2nekoweb@main
         with:
           nekoweb-api-key: ${{ secrets.NEKOWEB_API_KEY }}
           nekoweb-domain: 'the-museum-of-us.nekoweb.org'
           nekoweb-username: 'the-museum-of-us'
-          directory: './dist'
+          directory: './deploy-files'
