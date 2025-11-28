@@ -41,6 +41,16 @@ jobs:
       - name: List files for debugging
         run: ls -la
 
+      - name: Analyze files before deploy
+        run: |
+          echo "=== File Analysis ==="
+          echo "Total size: $(du -sh .)"
+          echo "Number of files: $(find . -type f | wc -l)"
+          echo "Largest files:"
+          find . -type f -exec du -h {} + | sort -rh | head -10
+          echo "Directory structure:"
+          find . -type d | sort
+
       - name: deploy2nekoweb
         uses: indiefellas/deploy2nekoweb@main
         with:
