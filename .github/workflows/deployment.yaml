@@ -5,62 +5,31 @@ on:
       - main
 
 jobs:
-  build_vue:
-    runs-on: ubuntu-latest
-    name: Build Vue
-    permissions:
-      contents: write
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-      - id: Build-Vue
-        uses: xRealNeon/VuePagesAction@1.0.1
-        with:
-          username: 'TokiTheToki'
-          reponame: 'the-museum-of-us'
-          token: ${{ secrets.GITHUB_TOKEN }} # Leave this line unchanged
-      - name: upload build
-        uses: actions/upload-artifact@v5
-        with:
-          name: 'vue-dist'
-          path: ./
-          retention-days: 1
   deploytonekoweb:
     runs-on: ubuntu-latest
     name: deploy2nekoweb
-    needs: build_vue
     steps:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Download built files
-        uses: actions/download-artifact@v6
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
         with:
-          name: vue-dist
-          path: ./deploy-files
+          node-version: '18'
+          cache: 'npm'
 
-      - name: Analyze files before deploy
+      - name: Install dependencies
+        run: npm install
+
+      - name: Build Vue app
+        run: npm run build
+
+      - name: Verify build output
         run: |
-          echo "=== File Analysis ==="
-          echo "Total size: $(du -sh .)"
-          echo "Number of files: $(find . -type f | wc -l)"
-          echo "Largest files:"
-          find . -type f -exec du -h {} + | sort -rh | head -10
-          echo "Directory structure:"
-          find . -type d | sort
-
-      - name: Find and prepare deployment files
-        run: |
-          echo "Looking for built files..."
-          # Check if files are in dist folder or root
-          if [ -d "./deploy-files/dist" ]; then
-            echo "Found files in dist folder"
-            cp -r ./deploy-files/dist/* ./deploy-files/
-            rm -rf ./deploy-files/dist
-          fi
-
-          echo "Final deployment files:"
-          ls -la ./deploy-files/
+          echo "=== Build output ==="
+          ls -la dist/
+          echo "=== HTML file content ==="
+          cat dist/index.html || echo "No index.html found"
 
       - name: deploy2nekoweb
         uses: indiefellas/deploy2nekoweb@main
@@ -68,4 +37,4 @@ jobs:
           nekoweb-api-key: ${{ secrets.NEKOWEB_API_KEY }}
           nekoweb-domain: 'the-museum-of-us.nekoweb.org'
           nekoweb-username: 'the-museum-of-us'
-          directory: './deploy-files'
+          directory: './dist'
