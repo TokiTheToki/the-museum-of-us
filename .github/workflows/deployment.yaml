@@ -1,4 +1,7 @@
-on: [push]
+on:
+  push:
+    branches:
+      - main
 
 jobs:
   build_vue:
@@ -15,6 +18,12 @@ jobs:
           username: 'TokiTheToki'
           reponame: 'the-museum-of-us'
           token: ${{ secrets.GITHUB_TOKEN }} # Leave this line unchanged
+      - name: upload build
+        uses: actions/upload-artifact@v5
+        with:
+          name: 'vue-dist'
+          path: ./
+          retention-days: 1
   deploytonekoweb:
     runs-on: ubuntu-latest
     name: deploy2nekoweb
@@ -29,4 +38,4 @@ jobs:
           nekoweb-api-key: ${{ secrets.NEKOWEB_API_KEY }}
           nekoweb-domain: 'the-museum-of-us.nekoweb.org'
           nekoweb-username: 'the-museum-of-us'
-          directory: '/'
+          directory: './'
