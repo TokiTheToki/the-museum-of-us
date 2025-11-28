@@ -25,6 +25,6 @@ jobs:
           BUILD_DIR: './build'
           DEPLOY_DIR: '/'
           CLEANUP: 'False'
-          DELAY: '0.5'
+          DELAY: 'False'
           NEKOWEB_PAGENAME: 'the-museum-of-us'
           ENCRYPTION_KEY: ${{ secrets.NEKOWEB_ENCRYPTION_KEY }}
