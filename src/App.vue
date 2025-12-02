@@ -1,4 +1,5 @@
 <script setup>
+import MainPageComponent from "@/components/main-page/MainPageComponent.vue";
 </script>
 
 <template>
@@ -6,7 +7,6 @@
   </header>
 
   <main>
-    Afficher C:
-    <p>PIEOZJTPEZROPREJGOJREOP</p>
+    <main-page-component></main-page-component>
   </main>
 </template>
